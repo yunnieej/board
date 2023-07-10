@@ -1,18 +1,19 @@
 package project.board.entity;
 
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import project.board.dto.BoardRequestDto;
+import project.board.dto.BoardUpdateDto;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
 @Entity
 @Getter
-public class Board extends BaseEntity{
+public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +30,7 @@ public class Board extends BaseEntity{
     @Column(columnDefinition = "text", nullable = false)
     private String content;
 
-    @ColumnDefault("0")
+    @Column
     private int hits;
 
     @Builder
@@ -39,6 +40,15 @@ public class Board extends BaseEntity{
         this.title = title;
         this.content = content;
         this.hits = hits;
+    }
+
+    public void update(BoardUpdateDto boardUpdateDto){
+        this.title = boardUpdateDto.getTitle();
+        this.content = boardUpdateDto.getContent();
+    }
+
+    public void updateHits(){
+        this.hits = this.hits+1;
     }
 
 }
