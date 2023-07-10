@@ -13,15 +13,15 @@ import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 @Transactional
 public class BoardServiceTest {
 
     @Autowired BoardRepository boardRepository;
     @Autowired BoardService boardService;
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void 작성자_없는경우_예외() throws Exception{
         //Given
         BoardRequestDto boardRequestDto = new BoardRequestDto();
@@ -29,21 +29,60 @@ public class BoardServiceTest {
         boardRequestDto.setContent("content1");
 
         //when
-        Long saveId = boardService.save(boardRequestDto);
+        boardService.save(boardRequestDto);
 
         //then
+        fail("예외가 발생해야한다.");
+    }
+
+    @Test
+    public void 제목_없는경우_예외() throws Exception {
+        //Given
+        BoardRequestDto boardRequestDto = new BoardRequestDto();
+        boardRequestDto.setWriter("writer2");
+        boardRequestDto.setContent("content2");
+
+        //when
+        boardService.save(boardRequestDto);
+
+        //then
+        fail("예외가 발생해야한다.");
+    }
+
+    @Test
+    public void 조회할_게시판_없는경우_예외() throws Exception{
 
     }
 
     @Test
-    public void 제목_없는경우_예외() throws Exception{
-        //Given
-
-        //When
-
-        //Then
+    public void 조회_응답_확인(){
 
     }
+
+    /**
+     * 게시판 저장 테스트 코드
+     */
+
+    @Test
+    public void 저장_응답값(){
+        //Given
+        BoardRequestDto boardRequestDto = new BoardRequestDto();
+        boardRequestDto.setWriter("test_writer");
+        boardRequestDto.setTitle("test_title");
+        boardRequestDto.setContent("test_content");
+
+        //When
+        Long saveId = boardService.save(boardRequestDto);
+
+        //Then
+        assertEquals(boardRequestDto, boardRepository.findById(saveId));
+    }
+
+
+
+
+
+
 
 
 

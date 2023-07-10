@@ -21,6 +21,13 @@ public class BoardService {
     // 저장
     @Transactional
     public Long save(BoardRequestDto boardRequestDto){
+
+        if(boardRequestDto.getWriter().isBlank()){
+            throw new IllegalStateException("작성자가 없습니다.");
+        }else if(boardRequestDto.getTitle().isBlank()){
+            throw new IllegalStateException("제목이 없습니다.");
+        }
+
         Long savedId = boardRepository.save(boardRequestDto.toEntity()).getId();
         return savedId;
     }
