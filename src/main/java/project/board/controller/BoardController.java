@@ -1,5 +1,6 @@
 package project.board.controller;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,10 @@ public class BoardController {
 
     @PostMapping("/save")
     public Long save(@RequestBody @Validated BoardRequestDto boardRequestDto){
+//        log.info("get dto.title = {}", boardRequestDto.getTitle());
+//        log.info("get dto.content = {}", boardRequestDto.getContent());
+//        log.info("return dto.title = {}", boardRequestDto.getTitle());
+//        log.info("return dto.content = {}", boardRequestDto.getContent());
         return boardService.save(boardRequestDto);
     }
 
@@ -31,6 +36,7 @@ public class BoardController {
     @GetMapping("/{id}")
     public BoardResponseDto findById(@PathVariable("id") Long id){
         BoardResponseDto byId = boardService.findById(id);
+
         return byId;
     }
 
@@ -48,6 +54,11 @@ public class BoardController {
 
     @PutMapping("/update/{id}")
     public Long update(@RequestBody @Validated BoardUpdateDto boardUpdateDto, @PathVariable("id") Long id){
+//        log.info("get dto.title = {}", boardUpdateDto.getTitle());
+//        log.info("get dto.content = {}", boardUpdateDto.getContent());
+//        log.info("return dto.title = {}", boardUpdateDto.getTitle());
+//        log.info("return dto.content = {}", boardUpdateDto.getContent());
+
         return boardService.update(boardUpdateDto, id);
     }
 
