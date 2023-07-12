@@ -100,18 +100,20 @@ public class BoardServiceTest {
 //        }
 //        boardService.save(boardRequestDto);
     }
+*/
+
+    String 특수문자제외 = "[ ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]+";
 
     //왜 성공 ..?
     @Test
     public void 저장시_특수문자_없는경우() throws Exception{
-        BoardRequestDto boardRequestDto = new BoardRequestDto("zz", "hi", "hello!!!");
+        BoardRequestDto boardRequestDto = new BoardRequestDto("zz", "hi", "안녕 하새용");
 
-//        if (boardRequestDto.getContent().matches("[0-9a-zA-Z가-힣]") == true){
-        if(Pattern.matches("[0-9a-zA-Z가-힣]", boardRequestDto.getContent())){
+        if (boardRequestDto.getContent().matches(특수문자제외) == false){
             throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
         }
     }
-*/
+
 
     @Test
     public void 저장_예외() throws Exception{
@@ -120,22 +122,32 @@ public class BoardServiceTest {
     }
 
     @Test
-    void 패턴_테스트_false(){
-        String 특수문자제외 = "[^a-zA-Z]";
-        String 문자 = "!@#";
-        System.out.println(문자.replaceAll(특수문자제외, ""));
-
-
-        assertFalse(문자.matches(특수문자제외));
-    }
-
-    @Test
-    void 패턴_테스트_true(){
-        String 특수문자제외 = "[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]";
-        String 문자 = "!@#$";
-        System.out.println(문자.replaceAll(특수문자제외, ""));
+    void 최종_패턴_테스트(){
+        String 특수문자제외 = "[ ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]+"; //특수문자 제외 모든것
+        String 문자 = "안녕 하세요"; //특수문자 없음
+//        System.out.println(문자.replaceAll(특수문자제외, ""));
         assertTrue(문자.matches(특수문자제외));
     }
+
+
+
+    @Test
+    void 패턴_테스트(){
+        String 특수문자제외 = "[^ ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]*"; //특수문자로 이루어짐
+        String 문자 = "ddd!!"; //특수문자 없음
+//        System.out.println(문자.replaceAll(특수문자제외, ""));
+        assertTrue(문자.matches(특수문자제외));
+    }
+
+    // ^[0-9a-zA-Zㄱ-ㅎ가-힣]*$ -> 특수문자를 제외한 문자만 허용
+    @Test
+    void 패턴_테스트_trueee(){
+        String 특수문자제외 = "^[0-9a-zA-Zㄱ-ㅎ가-힣]*$"; //특수문자가 포함되어있지 않는 정규식
+        String 문자 = "!@##$$안녕";
+//        System.out.println(문자.replaceAll(특수문자제외, ""));
+        assertTrue(문자.matches(특수문자제외));
+    }
+
     /**
      * 수정
      * @throws Exception
