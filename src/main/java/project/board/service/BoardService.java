@@ -23,12 +23,13 @@ public class BoardService {
     @Transactional
     public Long save(BoardRequestDto boardRequestDto){
 
-//        if(boardRequestDto.getWriter().isBlank() && boardRequestDto.getTitle().isBlank()){
+//        if(boardRequestDto.getWriter().isBlank() || boardRequestDto.getTitle().isBlank()){
 //            throw new IllegalStateException("필수 입력값 (작성자, 제목)값이 없습니다.");
 //        }
-//        else if(boardRequestDto.getContent().matches("[0-9a-zA-Z가-힣]*")){
-//            throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
-//        }
+//        else
+        if(boardRequestDto.getContent().matches("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]")){
+            throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
+        }
         Long savedId = boardRepository.save(boardRequestDto.toEntity()).getId();
         return savedId;
     }

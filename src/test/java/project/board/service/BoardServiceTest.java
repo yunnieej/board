@@ -85,6 +85,7 @@ public class BoardServiceTest {
         assertThat(savedId).isEqualTo(board.getId());
     }
 
+    /***
     @Test
     public void 저장시_예외처리() throws Exception{
         BoardRequestDto boardRequestDto = new BoardRequestDto("22", "hi", "hello!!");
@@ -104,11 +105,37 @@ public class BoardServiceTest {
     @Test
     public void 저장시_특수문자_없는경우() throws Exception{
         BoardRequestDto boardRequestDto = new BoardRequestDto("zz", "hi", "hello!!!");
-        if (boardRequestDto.getContent().matches("[0-9a-zA-Z가-힣]") == true){
+
+//        if (boardRequestDto.getContent().matches("[0-9a-zA-Z가-힣]") == true){
+        if(Pattern.matches("[0-9a-zA-Z가-힣]", boardRequestDto.getContent())){
             throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
         }
     }
+*/
 
+    @Test
+    public void 저장_예외() throws Exception{
+        BoardRequestDto boardRequestDto = new BoardRequestDto("xx", "xx", "xx!!");
+        boardService.save(boardRequestDto);
+    }
+
+    @Test
+    void 패턴_테스트_false(){
+        String 특수문자제외 = "[^a-zA-Z]";
+        String 문자 = "!@#";
+        System.out.println(문자.replaceAll(특수문자제외, ""));
+
+
+        assertFalse(문자.matches(특수문자제외));
+    }
+
+    @Test
+    void 패턴_테스트_true(){
+        String 특수문자제외 = "[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]";
+        String 문자 = "!@#$";
+        System.out.println(문자.replaceAll(특수문자제외, ""));
+        assertTrue(문자.matches(특수문자제외));
+    }
     /**
      * 수정
      * @throws Exception
