@@ -11,6 +11,7 @@ import project.board.repository.BoardRepository;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +23,12 @@ public class BoardService {
     @Transactional
     public Long save(BoardRequestDto boardRequestDto){
 
-        if(boardRequestDto.getWriter().isBlank()){
-            throw new IllegalStateException("작성자가 없습니다.");
-        }else if(boardRequestDto.getTitle().isBlank()){
-            throw new IllegalStateException("제목이 없습니다.");
-        }
-
+//        if(boardRequestDto.getWriter().isBlank() && boardRequestDto.getTitle().isBlank()){
+//            throw new IllegalStateException("필수 입력값 (작성자, 제목)값이 없습니다.");
+//        }
+//        else if(boardRequestDto.getContent().matches("[0-9a-zA-Z가-힣]*")){
+//            throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
+//        }
         Long savedId = boardRepository.save(boardRequestDto.toEntity()).getId();
         return savedId;
     }
@@ -87,6 +88,11 @@ public class BoardService {
     // 게시글 수정
     @Transactional
     public Long update(BoardUpdateDto boardUpdateDto, Long id){
+
+        if(boardRepository.findById(id).isEmpty()){
+            throw new NoSuchElementException("해당 순번이 존재하지 않습니다.");
+        }
+
         Board board = boardRepository.findById(id).get();
         board.update(boardUpdateDto);
         return id;
@@ -95,6 +101,10 @@ public class BoardService {
     // 게시글 삭제
     @Transactional
     public Long delete(Long id){
+
+//        if (boardRepository.findById(id).isEmpty()){
+//            throw new NoSuchElementException("해당 순번이 존재하지 않습니다.");
+//        }
         boardRepository.deleteById(id);
         return id;
     }
