@@ -51,7 +51,7 @@ public class BoardController {
         return boardService.update(boardUpdateDto, id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public Long delete(@PathVariable("id") Long id){
         return boardService.delete(id);
     }

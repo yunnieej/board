@@ -11,6 +11,11 @@ spring:
     password: ${db.password}
   thymeleaf:
     cache: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
 
   # spring data jpa 설정
   jpa:
