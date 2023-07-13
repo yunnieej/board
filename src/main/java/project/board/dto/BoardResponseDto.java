@@ -19,13 +19,15 @@ public class BoardResponseDto {
     private String writer;
     @JsonProperty
     private int hits;
+    private String content;
 
     @Builder
-    public BoardResponseDto(Long id, String title, String writer, int hits){
+    public BoardResponseDto(Long id, String title, String writer, String content ,int hits){
         this.id = id;
         this.title = title;
         this.writer = writer;
         this.hits = hits;
+        this.content = content;
     }
 
 }

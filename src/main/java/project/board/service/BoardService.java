@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +24,10 @@ public class BoardService {
     @Transactional
     public Long save(BoardRequestDto boardRequestDto){
 
-//        if(boardRequestDto.getWriter().isBlank() || boardRequestDto.getTitle().isBlank()){
-//            throw new IllegalStateException("필수 입력값 (작성자, 제목)값이 없습니다.");
-//        }
-//        else
-        if(boardRequestDto.getContent().matches("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]")){
+        if(boardRequestDto.getWriter().isBlank() || boardRequestDto.getTitle().isBlank()){
+            throw new IllegalStateException("필수 입력값 (작성자, 제목)값이 없습니다.");
+        }
+        else if(boardRequestDto.getContent().matches("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]")){
             throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
         }
         Long savedId = boardRepository.save(boardRequestDto.toEntity()).getId();
@@ -37,12 +37,18 @@ public class BoardService {
 
     @Transactional
     public BoardResponseDto findById(Long id){
-        Board board = boardRepository.findById(id).get();
+//        Board board = boardRepository.findById(id).get();
+        Optional<Board> BoardById = boardRepository.findById(id);
+        if(!BoardById.isPresent()){
+            throw new NoSuchElementException("해당 순번이 존재하지 않습니다.");
+        }
+        Board board = BoardById.get();
         board.updateHits();
         BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .writer(board.getWriter())
+                .content(board.getContent())
                 .hits(board.getHits())
                 .build();
         return boardResponseDto;
@@ -77,6 +83,7 @@ public class BoardService {
                     .id(board.getId())
                     .title(board.getTitle())
                     .writer(board.getWriter())
+                    .content(board.getContent())
 //                    .hits(boardRepository.updateHits(board.getId()))
                     .hits(board.getHits())
                     .build();
@@ -111,16 +118,3 @@ public class BoardService {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

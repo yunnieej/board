@@ -23,7 +23,7 @@ public class BoardRequestDto {
     private String title;
 
     @JsonProperty
-    @Pattern(regexp="[0-9a-zA-Z가-힣]*",message="내용에 특수문자는 입력할 수 없습니다.")
+    @Pattern(regexp="[ ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]+",message="내용에 특수문자는 입력할 수 없습니다.")
     private String content;
 
     private int hits;
