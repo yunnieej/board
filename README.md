@@ -50,4 +50,6 @@ Service : 사용자가 요청하는 비즈니스 로직을 수행 ex) 데이터 
 ### 세부 기능
 
 1. 게시글 상세보기
-2. 
+![img.png](img.png)
+사용자가 localhost:8082/list를 요청하면 전체 게시판 리스트를 볼 수 있다.
+boardService에서 처리하는 findAll() 메서드를 실행하면 

@@ -2,13 +2,20 @@ package project.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import project.board.PageInfo;
 import project.board.dto.BoardRequestDto;
 import project.board.dto.BoardResponseDto;
 import project.board.dto.BoardUpdateDto;
+
+import project.board.entity.Board;
 import project.board.service.BoardService;
 
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,7 +34,15 @@ public class BoardController {
         return boardService.findAll();
     }
 
-    @GetMapping("/{id}")
+//    @GetMapping
+//    public BoardResponseDto getPage(final Pageable pageable){
+//        Page<BoardResponseDto> all = boardService.findAll(pageable);
+//        return new BoardResponseDto(all);
+//    }
+
+
+
+    @GetMapping("/board/{id}")
     public BoardResponseDto findById(@PathVariable("id") Long id){
         BoardResponseDto byId = boardService.findById(id);
 

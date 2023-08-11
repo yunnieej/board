@@ -1,6 +1,8 @@
 package project.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +12,15 @@ import project.board.entity.Board;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class BoardResponseDto {
-    @JsonProperty
+//    @JsonProperty
     private Long id;
-    @JsonProperty
+//    @JsonProperty
     private String title;
-    @JsonProperty
+//    @JsonProperty
     private String writer;
-    @JsonProperty
+//    @JsonProperty
     private int hits;
     private String content;
 

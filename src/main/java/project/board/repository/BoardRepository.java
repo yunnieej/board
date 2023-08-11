@@ -1,5 +1,7 @@
 package project.board.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,8 +22,11 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     // 제목으로 찾기
     List<Board> findByTitle(String title);
 
+//    List<Board> findByPage(Pageable pageable);
+
     // 조회수 올리기
 //    @Modifying
 //    @Query(value = "update Board b set b.hits = b.hits+1 where b.id=:id")
 //    int updateHits(@Param("id") Long id);
+
 }

@@ -1,6 +1,9 @@
 package project.board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.board.dto.BoardRequestDto;
 import project.board.dto.BoardResponseDto;
@@ -8,6 +11,7 @@ import project.board.dto.BoardUpdateDto;
 import project.board.entity.Board;
 import project.board.repository.BoardRepository;
 
+import javax.persistence.TableGenerator;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +63,24 @@ public class BoardService {
     public List<BoardResponseDto> findAll(){
         List<Board> all = boardRepository.findAll();
         return getBoardResponseDto(all);
+    }
+
+    @Transactional
+    public Page<BoardResponseDto> findAll(Pageable pageable){
+        Page<Board> all = boardRepository.findAll(pageable);
+        Page<BoardResponseDto> dtoList = toDtoList(all);
+        return dtoList;
+    }
+
+
+    // page Entity를 page Dto로 변환
+    private Page<BoardResponseDto> toDtoList(Page<Board> boardList){
+        Page<BoardResponseDto> boardDtoList = boardList.map(m -> BoardResponseDto.builder()
+                .id(m.getId())
+                .title(m.getTitle())
+                .content(m.getContent())
+                .build());
+        return boardDtoList;
     }
 
     // 해당 작성자로 게시판 조회
@@ -117,4 +139,6 @@ public class BoardService {
         return id;
     }
 
+//    @Transactional
+//    public
 }
